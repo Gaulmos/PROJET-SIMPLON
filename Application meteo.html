@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <script src="https://code.jquery.com/jquery-3.7.1.js" 
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <style>
+        body{
+            background-color: rgb(red, green, blue);
+        }
+        div(
+            position; absolute;
+            top: 50%;
+            left: 50%;
+            transformt: translate(-50%,-50%);
+            max-widht: 100%;
+
+        )
+        h1{
+            color: white;
+            font-family: "montserrat";
+            text-align: center;
+            opacity: 0;
+            animation: pop 0.2s ease-in-out forwards;
+        }
+        img-meteo{
+                       
+            opacity: 0;
+            display: block;
+            margin: auto;
+            animation: pop 0.5s ease-in-out forwards;
+        }
+
+        @keyframes pop {
+            0%{
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100%{
+                opacity: 1;
+                transform: translateY(0);   
+            }
+        } 
+
+
+
+    </style>
+    <script>
+        $.ajax({
+            url: "https://api.openweathermap.org/data/2.5/weather?q=Bayonne&units=metric&lang=fr&appid=d732320c2f9f09af10a0142f5a8e7b7c",
+            method: "get",
+            success: function(data) {
+                console.log(data);
+
+                // Récupération de la température et du nom de la ville
+                var temperature = data.main.temp;
+                var cityName = data.name;
+
+                // Affichage de la température et du nom de la ville
+                document.getElementById("temperature").innerHTML = "Température : " + temperature + "°C";
+                document.getElementById("city").innerHTML = "Ville : " + cityName;
+
+                document.getElementById("img-meteo").src = "https://openweathermap.org/img/wn/02n.png"+ data.weather[0].icon + "@4x.png";
+                document.getElementById("meteo").innerHTML = data.weather[0].description;
+                
+
+                tableau = {
+                    "clear sky" : "Ciel dégagé",
+                    "few clouds" : "Peu nuageux",
+                    "scattered clouds" : "Nuages éparses",
+                    "broken clouds" : "Nuages fragmentés",
+                    "shower rain" : "Averses de pluie",
+                    "rain" : "Pluvieux",
+                    "thunderstorm" : "Orage",
+                    "snow":"Neige",
+                    "mist" : "Brumeux"
+                 }
+
+                $("#img-meteo").attr("src","icon/" + data.weather[0].icon + ".png");
+                $("#meteo").text(tableau[data.weather[0].description]);
+            }
+        })
+
+
+
+    </script>
+</body>
+
+<div>
+    <h1 id="temperature"></h1>
+    <h2 id="city"></h2>
+    <img id="img-meteo" src="" width="200" alt="">
+    <h3 id="meteo"></h3>
+
+
+</div>
+
+
+
+
+
+</html>
